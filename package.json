@@ -5,21 +5,16 @@
   "main": "sendBundle.js",
   "scripts": {
     "start": "node EssombaBotLiquidityForAll.js",
-    "build:css": "npx tailwindcss -i src/input.css -o dist/output.css --minify",
-    "build": "npm run build:css"
+    "build": "npm run build:css",
+    "build:css": "npx tailwindcss -i src/input.css -o dist/output.css --minify"
   },
   "dependencies": {
     "@flashbots/ethers-provider-bundle": "^1.0.0",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2"
   },
- "scripts": {
-  "build": "npm run build:css",
-  "build:css": "npx tailwindcss -i src/input.css -o dist/output.css --minify"
-},
-"devDependencies": {
-  "tailwindcss": "^3.3.3"
-}
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
   },
   "author": "Your Name",
   "license": "MIT"
