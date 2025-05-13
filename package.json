@@ -1,0 +1,23 @@
+{
+  "name": "essomba-bot-liquidity-for-all",
+  "version": "1.0.0",
+  "description": "A DeFi arbitrage bot using flash loans",
+  "main": "sendBundle.js",
+  "scripts": {
+    "start": "node EssombaBotLiquidityForAll.js",
+    "build:css": "npx tailwindcss -i src/input.css -o dist/output.css --minify",
+    "build": "npm run build:css"
+  },
+  "dependencies": {
+    "@flashbots/ethers-provider-bundle": "^1.0.0",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essomba Bot Liquidity for All</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fallback in case CDN fails -->
+    <script>
+        if (!window.tailwindcss) {
+            document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.1/dist/ethers.umd.min.js"></script>
+    <!-- Hosted on: https://essomba-bot-liquidity-for-all.vercel.app/ -->
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-800 text-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [provider, setProvider] = useState(null);
+            const [signer, setSigner] = useState(null);
+            const [walletAddress, setWalletAddress] = useState(null);
+            const [totalProfit, setTotalProfit] = useState("0");
+            const [recentCycles, setRecentCycles] = useState([]);
+            const [estimatedROI, setEstimatedROI] = useState("5-1");
+
+            // Simuler des données fictives
+            const simulateData = () => {
+                const fakeTotalProfit = (Math.random() * 5).toFixed(4); // Entre 0 et 5 ETH
+                const fakeCycles = Array.from({ length: 3 }, () => (Math.random() * 0.5).toFixed(4)); // 3 cycles entre 0 et 0.5 ETH
+                setTotalProfit(fakeTotalProfit);
+                setRecentCycles(fakeCycles);
+            };
+
+            useEffect(() => {
+                simulateData(); // Initialisation avec données fictives
+                const interval = setInterval(() => {
+                    simulateData(); // Mise à jour toutes les 10 secondes
+                }, 10000);
+                return () => clearInterval(interval);
+            }, []);
+
+            // Contract details
+            const contractAddress = "0x2d607E6fbD4cc545C40D735Ea36dD236834F25Dc";
+            const contractABI = [
+                "function totalProfit() view returns (uint256)",
+                "function getRecentCycles() view returns (uint256[])"
+            ];
+
+            // Connect to wallet
+            const connectWallet = async () => {
+                if (window.ethereum) {
+                    const ethersProvider = new ethers.BrowserProvider(window.ethereum);
+                    const ethersSigner = await ethersProvider.getSigner();
+                    const address = await ethersSigner.getAddress();
+                    setProvider(ethersProvider);
+                    setSigner(ethersSigner);
+                    setWalletAddress(address);
+
+                    // Fetch contract data
+                    const contract = new ethers.Contract(contractAddress, contractABI, ethersProvider);
+                    const profit = await contract.totalProfit();
+                    setTotalProfit(ethers.formatEther(profit));
+
+                    const cycles = await contract.getRecentCycles();
+                    setRecentCycles(cycles.map(cycle => ethers.formatEther(cycle)));
+                } else {
+                    alert("Please install MetaMask to connect your wallet.");
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-4">
+                    {/* Header with Logo */}
+                    <header className="w-full max-w-4xl text-center mb-8">
+                        <img src="logo.png" alt="Essomba Bot Liquidity for All Logo" className="mx-auto h-16 mb-4" />
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-pulse">
+                            Essomba Bot Liquidity for All
+                        </h1>
+                        <p className="text-xl md:text-2xl text-blue-200">
+                            Liquidity for All – Decentralized Profits with Purity & Spirituality
+                        </p>
+                        <button
+                            onClick={connectWallet}
+                            className="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-lg transition duration-300"
+                        >
+                            {walletAddress ? `Connected: ${walletAddress.slice(0, 6)}...` : "Connect Wallet"}
+                        </button>
+                    </header>
+
+                    {/* Dashboard Section */}
+                    <section className="w-full max-w-4xl bg-white bg-opacity-10 rounded-lg p-6 mb-8">
+                        <h2 className="text-2xl font-semibold mb-4">Dashboard (Simulation Mode)</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="p-4 bg-blue-600 bg-opacity-20 rounded-lg">
+                                <h3 className="text-lg font-medium">Total Profit</h3>
+                                <p className="text-2xl">{totalProfit} ETH</p>
+                            </div>
+                            <div className="p-4 bg-purple-600 bg-opacity-20 rounded-lg">
+                                <h3 className="text-lg font-medium">Recent Cycles</h3>
+                                <ul className="text-sm">
+                                    {recentCycles.map((cycle, index) => (
+                                        <li key={index}>Cycle {index + 1}: {cycle} ETH</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="p-4 bg-indigo-600 bg-opacity-20 rounded-lg">
+                                <h3 className="text-lg font-medium">Estimated ROI</h3>
+                                <p className="text-2xl">{estimatedROI} ETH/month</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Purchase Section */}
+                    <section className="w-full max-w-4xl text-center">
+                        <h2 className="text-2xl font-semibold mb-4">Get Started</h2>
+                        <div className="flex flex-col md:flex-row justify-center gap-4">
+                            <a
+                                href="https://essombabot.gumroad.com/l/hyehz"
+                                className="px-6 py-3 bg-purple-500 hover:bg-purple-700 text-white rounded-lg shadow-lg transition duration-300"
+                            >
+                                Buy License (0.2 ETH)
+                            </a>
+                        </div>
+                        <p className="mt-4 text-blue-200">
+                            Join the future of DeFi arbitrage – profits with purpose!
+                        </p>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="mt-8 text-center text-blue-300">
+                        <p>© 2025 Essomba Bot Liquidity for All | Contact: russelsessomba@gmail.com</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+</body>
+</html>
