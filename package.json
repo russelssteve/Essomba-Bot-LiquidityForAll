@@ -4,17 +4,12 @@
   "description": "A DeFi arbitrage bot using flash loans",
   "main": "sendBundle.js",
   "scripts": {
-    "start": "node EssombaBotLiquidityForAll.js",
-    "build": "npm run build:css",
-    "build:css": "npx tailwindcss -i src/input.css -o dist/output.css --minify"
+    "start": "node EssombaBotLiquidityForAll.js"
   },
   "dependencies": {
     "@flashbots/ethers-provider-bundle": "^1.0.0",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.3.3"
   },
   "author": "Your Name",
   "license": "MIT"
